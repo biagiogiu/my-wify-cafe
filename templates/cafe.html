@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+{% block title %}My Cafes: {{cafe.name}}{% endblock %}
+{% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container alert alert-warning alert-dismissible fade show fixed-top" role="alert"
+         style="margin-top:60px">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+  {% endwith %}
+<div class="row p-4 pb-0 pe-md-0 pt-lg-5 my-5 rounded-3 overflow-hidden border shadow-lg">
+  <div class="col-sm-12 col-md-7 col-lg-5">
+    <h1 class="mt-md-5">{{ cafe.name }}</h1>
+    <p class="lead my-4">Added by: {{ cafe.author.name }}</p>
+    <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <div class="ratings text-center col">
+        <span class="product-rating">{{ "%.1f"|format((average.wifi+average.coffee+average.power)/3) }}</span><span>/5</span>
+        <div class="stars">
+          {% for n in range(((average.wifi+average.coffee+average.power)/3)|round(0, 'common')|int) %}
+          <i class="fa fa-star rating-color"></i>
+          {% endfor %}
+        </div>
+        <div class="rating-text">
+          <span>{{ number_of_ratings }} ratings</span>
+        </div>
+      </div>
+    </div>
+    <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <div class="col">
+        <div class="container d-block justify-content-center align-items-center">
+          <div class="bg-body border shadow p-3 rounded">
+            <div class="row row-cols-4 d-flex justify-content-between align-items-center">
+              <h5 class="col review-stat d-flex justify-content-start">Wi-Fi</h5>
+              <div class="col-2 rate-box w-50 d-flex justify-content-between align-items-center readonly">
+                <input type="radio" name="wifi" id="wifi0" value="5" disabled/>
+                <label class="fa fa-wifi" for="wifi0"></label>
+                <input type="radio" name="wifi" id="wifi1" value="4" disabled/>
+                <label class="fa fa-wifi" for="wifi1"></label>
+                <input type="radio" name="wifi" id="wifi2" value="3" disabled/>
+                <label class="fa fa-wifi" for="wifi2"></label>
+                <input type="radio" name="wifi" id="wifi3" value="2" disabled/>
+                <label class="fa fa-wifi" for="wifi3"></label>
+                <input type="radio" name="wifi" id="wifi4" value="1" disabled/>
+                <label class="fa fa-wifi" for="wifi4"></label>
+              </div>
+              <h6 class="col d-flex justify-content-end">{{ "%.1f"|format(average.wifi) }}</h6>
+            </div>
+            <div class="row row-cols-4 mt-1 d-flex justify-content-between align-items-center">
+              <h5 class="col review-stat d-flex justify-content-start">Coffee</h5>
+              <div class="col-2 w-50 rate-box d-flex justify-content-between align-items-center">
+                <input type="radio" name="coffee" id="coffee0" value="5" disabled/>
+                <label class="fa fa-mug-saucer" for="coffee0"></label>
+                <input type="radio" name="coffee" id="coffee1" value="4" disabled>
+                <label class="fa fa-mug-saucer" for="coffee1"></label>
+                <input type="radio" name="coffee" id="coffee2" value="3" disabled/>
+                <label class="fa fa-mug-saucer" for="coffee2"></label>
+                <input type="radio" name="coffee" id="coffee3" value="2" disabled/>
+                <label class="fa fa-mug-saucer" for="coffee3"></label>
+                <input type="radio" name="coffee" id="coffee4" value="1" disabled/>
+                <label class="fa fa-mug-saucer" for="coffee4"></label>
+              </div>
+              <h6 class="col d-flex justify-content-end">{{ "%.1f"|format(average.coffee) }}</h6>
+            </div>
+            <div class="row row-cols-4 mt-1 d-flex justify-content-between align-items-center">
+              <h5 class="col review-stat d-flex justify-content-start">Power</h5>
+              <div class="col-2 w-50 rate-box d-flex justify-content-between align-items-center px-3">
+                <input type="radio" name="power" id="power0" value="5" disabled/>
+                <label class="fa fa-plug" for="power0"></label>
+                <input type="radio" name="power" id="power1" value="4" disabled/>
+                <label class="fa fa-plug" for="power1"></label>
+                <input type="radio" name="power" id="power2" value="3" disabled/>
+                <label class="fa fa-plug" for="power2"></label>
+                <input type="radio" name="power" id="power3" value="2" disabled/>
+                <label class="fa fa-plug" for="power3"></label>
+                <input type="radio" name="power" id="power4" value="1" disabled/>
+                <label class="fa fa-plug" for="power4"></label>
+              </div>
+              <h6 class="col d-flex justify-content-end">{{ "%.1f"|format(average.power) }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if current_user.is_authenticated %}
+    <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <div class="col">
+        <div class="container">
+          <button class="w-100 btn btn-lg btn-primary shadow"
+                      onclick="location.href='{{ url_for('rate_cafe' , cafe_id=cafe.id) }}'">Add My Rating</button>
+          </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if current_user.is_authenticated and cafe.author_id == current_user.id%}
+    <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <div class="col">
+        <div class="container">
+          <button class="w-100 btn btn-lg btn-primary shadow"
+                      onclick="location.href='{{ url_for('edit_cafe' , cafe_id=cafe.id) }}'">Edit My Wify Cafe</button>
+          </div>
+        </div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="col-md-5 col-lg-6 offset-lg-1 p-0 overflow-hidden shadow-lg">
+    <img class="rounded-top-3 shadow" src="{{ cafe.img_url }}" alt="" height="550">
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+  let wifi_ID = "wifi" + (5 - Math.round({{ average.wifi|float }}));
+  let coffee_ID = "coffee" + (5 - Math.round({{ average.coffee|float }}));
+  let power_ID = "power" + (5 - Math.round({{ average.power|float }}));
+
+  document.getElementById(wifi_ID).checked = true;
+  document.getElementById(coffee_ID).checked = true;
+  document.getElementById(power_ID).checked = true;
+</script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+{% block title %}Rate {{cafe.name}}{% endblock %}
+{% block content %}
+<div class="row p-4 pb-0 pe-md-0 pt-lg-5 my-5 rounded-3 overflow-hidden border shadow-lg">
+  <form class="col-sm-12 col-md-7 col-lg-5" action="{{ url_for('rate_cafe', cafe_id=cafe.id) }}" method="post">
+    <h1 class="mt-md-5">Rate {{cafe.name}}</h1>
+    <p class="lead my-4">Added by: {{ cafe.author.name }}</p>
+    <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <div class="ratings text-center col wrapper">
+        <div class="container d-block justify-content-center align-items-center">
+          <div class="bg-body border shadow p-3 px-sm-5 mb-3 rounded">
+            <div class="row d-flex justify-content-between align-items-center">
+              <h5 class="col-5 review-stat d-flex justify-content-start">Wi-Fi</h5>
+              <div class="col rate-box w-50 d-flex justify-content-between align-items-center">
+                <input type="radio" name="wifi" id="wifi0" value="5"/>
+                <label class="fa fa-wifi" for="wifi0"></label>
+                <input type="radio" name="wifi" id="wifi1" value="4"/>
+                <label class="fa fa-wifi" for="wifi1"></label>
+                <input type="radio" name="wifi" id="wifi2" value="3"/>
+                <label class="fa fa-wifi" for="wifi2"></label>
+                <input type="radio" name="wifi" id="wifi3" value="2"/>
+                <label class="fa fa-wifi" for="wifi3"></label>
+                <input type="radio" name="wifi" id="wifi4" value="1"/>
+                <label class="fa fa-wifi" for="wifi4"></label>
+              </div>
+            </div>
+            <div class="row mt-1 d-flex justify-content-between align-items-center">
+              <h5 class="col-5 review-stat d-flex justify-content-start">Coffee</h5>
+              <div class="col w-50 rate-box d-flex justify-content-between align-items-center">
+                <input type="radio" name="coffee" id="coffee0" value="5"/>
+                <label class="fa fa-mug-saucer" for="coffee0"></label>
+                <input type="radio" name="coffee" id="coffee1" value="4"/>
+                <label class="fa fa-mug-saucer" for="coffee1"></label>
+                <input type="radio" name="coffee" id="coffee2" value="3"/>
+                <label class="fa fa-mug-saucer" for="coffee2"></label>
+                <input type="radio" name="coffee" id="coffee3" value="2"/>
+                <label class="fa fa-mug-saucer" for="coffee3"></label>
+                <input type="radio" name="coffee" id="coffee4" value="1"/>
+                <label class="fa fa-mug-saucer" for="coffee4"></label>
+              </div>
+            </div>
+            <div class="row mt-1 d-flex justify-content-between align-items-center">
+                <h5 class="col-5 review-stat d-flex justify-content-start">Power</h5>
+              <div class="col w-50 rate-box d-flex justify-content-between align-items-center px-3">
+                <input type="radio" name="power" id="power0" value="5"/>
+                <label class="fa fa-plug" for="power0"></label>
+                <input type="radio" name="power" id="power1" value="4"/>
+                <label class="fa fa-plug" for="power1"></label>
+                <input type="radio" name="power" id="power2" value="3"/>
+                <label class="fa fa-plug" for="power2"></label>
+                <input type="radio" name="power" id="power3" value="2"/>
+                <label class="fa fa-plug" for="power3"></label>
+                <input type="radio" name="power" id="power4" value="1"/>
+                <label class="fa fa-plug" for="power4"></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+          <div class="col">
+            <div class="container">
+              <button class="w-100 btn btn-lg btn-primary shadow" type="submit">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <div class="col-md-5 col-lg-6 offset-lg-1 p-0 overflow-hidden shadow-lg">
+    <img class="rounded-top-3 shadow" src="{{ cafe.img_url }}" alt="" height="550">
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script type="text/javascript">
+  let wifi_ID = "wifi" + (5 - {{ratings.wifi|int}});
+  console.log(wifi_ID);
+  let coffee_ID = "coffee" + (5 - {{ratings.coffee|int}});
+  console.log(coffee_ID);
+  let power_ID = "power" + (5 - {{ratings.power|int}});
+  console.log(power_ID);
+
+  document.getElementById(wifi_ID).checked = true;
+  document.getElementById(coffee_ID).checked = true;
+  document.getElementById(power_ID).checked = true;
+</script>
+{% endblock %}

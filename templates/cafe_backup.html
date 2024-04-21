@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+{% block title %}My Cafes: {{cafe.name}}{% endblock %}
+{% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container alert alert-warning alert-dismissible fade show fixed-top" role="alert"
+         style="margin-top:60px">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+  {% endwith %}
+<div class="row p-4 pb-0 pe-md-0 pt-lg-5 my-5 rounded-3 overflow-hidden border shadow-lg">
+  <div class="col-sm-12 col-md-7 col-lg-5">
+    <h1 class="mt-md-5">{{ cafe.name }}</h1>
+    <p class="lead my-4">Added by: {{ cafe.author.name }}</p>
+    <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <div class="ratings text-center col">
+        <span class="product-rating">{{ "%.1f"|format((wifi+coffee+power)/3) }}</span><span>/5</span>
+        <div class="stars">
+          {% for n in range(((wifi+coffee+power)/3)|round(0, 'common')|int) %}
+          <i class="fa fa-star rating-color"></i>
+          {% endfor %}
+        </div>
+        <div class="rating-text">
+          <span>{{ number_of_ratings }} ratings</span>
+        </div>
+      </div>
+    </div>
+    <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <div class="col">
+        <div class="container d-block justify-content-center align-items-center">
+          <div class="bg-body border shadow p-3 rounded">
+            <div class="row row-cols-4 d-flex justify-content-between align-items-center">
+              <h5 class="col review-stat">Wi-Fi</h5>
+              <div class="col-2 w-50 small-ratings d-flex justify-content-between align-items-center">
+                {% for n in range(wifi|round(0, 'common')|int) %}
+                <i class="fa fa-wifi rating-color"></i>
+                {% endfor %}
+                {% for n in range(5-(wifi|round(0, 'common')|int)) %}
+                <i class="fa fa-wifi"></i>
+                {% endfor %}
+              </div>
+              <h6 class="col d-flex justify-content-end">{{ "%.1f"|format(wifi) }}</h6>
+            </div>
+            <div class="row row-cols-4 mt-1 d-flex justify-content-between align-items-center">
+              <h5 class="col review-stat">Coffee</h5>
+              <div class="col-2 w-50 small-ratings d-flex justify-content-between align-items-center">
+                {% for n in range(coffee|round(0, 'common')|int) %}
+                <i class="fa fa-mug-saucer rating-color"></i>
+                {% endfor %}
+                {% for n in range(5-(coffee|round(0, 'common')|int)) %}
+                <i class="fa fa-mug-saucer"></i>
+                {% endfor %}
+              </div>
+              <h6 class="col d-flex justify-content-end">{{ "%.1f"|format(coffee) }}</h6>
+            </div>
+            <div class="row row-cols-4 mt-1 d-flex justify-content-between align-items-center">
+              <div class="col">
+                <h5 class="review-stat">Power</h5>
+              </div>
+              <div class="col-2 w-50 small-ratings d-flex justify-content-between align-items-center px-3">
+                {% for n in range(power|round(0, 'common')|int) %}
+                <i class="fa fa-plug rating-color"></i>
+                {% endfor %}
+                {% for n in range(5-(power|round(0, 'common')|int)) %}
+                <i class="fa fa-plug"></i>
+                {% endfor %}
+              </div>
+              <div class="col d-flex justify-content-end">
+                <h6 >{{ "%.1f"|format(power) }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      <div class="col">
+        <div class="container">
+          <button class="w-100 btn btn-lg btn-primary shadow"
+                      onclick="location.href='{{ url_for('rate_cafe' , cafe_id=cafe.id) }}'">Add your rating</button>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="col-md-5 col-lg-6 offset-lg-1 p-0 overflow-hidden shadow-lg">
+    <img class="rounded-top-3 shadow" src="{{ cafe.img_url }}" alt="" height="550">
+  </div>
+</div>
+{% endblock %}

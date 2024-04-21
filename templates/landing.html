@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}My Cafes{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+      <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+        <h1 class="display-4 fw-bold lh-1">My Wify Cafes</h1>
+        <p class="lead">Discover Your Perfect Work & Chill Spot: Explore Cafes with WiFi!
+Welcome to our community-driven platform dedicated to helping you find the ideal cafe to work, study, or simply relax with a cup of coffee and a reliable WiFi connection.
+Join our growing community of cafe enthusiasts by signing in and sharing your favorite spots! Whether it's a cozy corner with excellent coffee, a trendy spot with a bustling atmosphere, or a hidden gem with the best WiFi in town, your recommendations will help others discover their new favorite hangouts.
+Start exploring now and contribute to our ever-expanding directory of cafes with WiFi. Let's build the ultimate resource for cafe lovers together!</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+          {% if not current_user.is_authenticated %}
+          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold" onclick="location.href='{{ url_for('login') }}'">Log in</button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="location.href='{{ url_for('sign_up') }}'">Sign up</button>
+          {% else %}
+          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold"
+                  onclick="location.href='{{ url_for('home') }}'">Home</button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4"
+                  onclick="location.href='{{ url_for('logout') }}'">Log out</button>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+          <img class="rounded-top-3" src="{{ url_for('static', filename='images/coffe_laptop.jpg') }}" alt=""
+               height="680">
+          <a href="https://www.freepik.com/free-ai-image/delicious-coffee-cup-indoors_60221423.htm#fromView=search&page=1&position=13&uuid=93f07734-d1da-46fb-b35c-7773c74de40a">Image by freepik</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

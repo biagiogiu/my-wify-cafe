@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}My Cafes{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="container alert alert-warning alert-dismissible fade show fixed-top" role="alert"
+         style="margin-top:60px">
+  {{ message }}
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+      <div class="row">
+        <div class="col-lg-9 p-3 p-lg-5 pt-lg-3">
+          <h1 class="display-4 fw-bold lh-1">{{ current_user.name }}'s Account</h1>
+          <p class="lead my-4">Email address: {{ current_user.email }}</p>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+            <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold" data-bs-toggle="modal" data-bs-target="#changeEmail" data-bs-whatever="{{ current_user.email }}">Change email</button>
+            <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold" data-bs-toggle="modal" data-bs-target="#changePassword">Change password</button>
+            <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-toggle="modal" data-bs-target="#deleteAccount">Delete account</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h5>My Wify Cafes</h5>
+      </div>
+      <div class="row">
+        <table class="table table-striped table-hover mb-5">
+          <tr>
+              <th>Name</th>
+              <th>Location</th>
+              <th>Opening hour</th>
+              <th colspan="2">My Rating</th>
+          </tr>
+          {% for cafe in cafes %}
+          <tr style="cursor:pointer" onclick="location.href='{{ url_for('show_cafe', cafe_id=cafe.id) }}'">
+            <td>{{ cafe.name }}</td>
+            <td onclick="window.open('{{ cafe.location }}','_blank')">Maps Link</td>
+            <td>{{ cafe.opening.strftime('%H:%M') }} - {{ cafe.closing.strftime('%H:%M') }}</td>
+            <td class="rating-cell" data-rating="{{ ratings[cafe.id] }}">{{ ratings }}</td>
+            <td>
+              <a class="px-2" href="{{ url_for('edit_cafe', cafe_id=cafe.id) }}" style="text-decoration:none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-pencil"
+                     viewBox="0 0 16 16">
+                  <path
+                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                </svg>
+              </a>
+              <a class="col" href="{{ url_for('delete_cafe', cafe_id=cafe.id) }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-trash"
+                     viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                </svg>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+  	  </table>
+      </div>
+    </div>
+
+    <div class="modal fade" id="changeEmail" tabindex="-1" aria-labelledby="changeEmailModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="changeEmailModalLabel">Change email</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="change-email" action="{{ url_for('change_email') }}" method="post">
+              <div class="mb-3">
+                <label for="new-email" class="col-form-label">New email:</label>
+                <input type="text" class="form-control" name="new_email" id="new-email">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" form="change-email" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="changePasswordModalLabel">Change password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="change-password" action="{{ url_for('change_password') }}" method="post">
+              <div class="mb-3">
+                <label for="old-password" class="col-form-label">Old password:</label>
+                <input type="password" class="form-control" name="old_password" id="old-password" required>
+              </div>
+              <div class="mb-3">
+                <label for="new-password" class="col-form-label">New password:</label>
+                <input type="password" class="form-control" name="new_password" id="new-password" required>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" form="change-password" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="deleteAccount" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="delete-account" action="{{ url_for('delete_account') }}" method="post">
+              <div class="mb-3">
+                <p class="col-form-label">We are sorry to see you go!<br/>Are you sure?</p>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" form="delete-account" class="btn btn-danger">Delete Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}
+<script>
+rating_cells = document.getElementsByClassName("rating-cell");
+  for (let i = 0; i < rating_cells.length; i++) {
+    rating = Math.round(rating_cells[i].getAttribute("data-rating"));
+    console.log(rating)
+    let star_content = "";
+    for (let i = 0; i < rating; i++) {
+      star_content += "<i class=\"fa fa-star rating-color\"></i>"
+    }
+    rating_cells[i].innerHTML = star_content
+  }
+</script>
+{% endblock %}

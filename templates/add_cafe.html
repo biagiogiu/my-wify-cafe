@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+{% block title %}Add Wify Cafe{% endblock %}
+{% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container alert alert-warning alert-dismissible fade show fixed-top" role="alert"
+         style="margin-top:60px">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+  {% endwith %}
+<div class="row p-4 my-5 rounded-3 overflow-hidden border shadow-lg">
+  <div class="col">
+    <h1 class="mt-md-5">Add Wify Cafe</h1>
+    <p class="lead my-4">Added by: {{ current_user.name }}</p>
+    <form class="row g-3" action="{{ url_for('add_cafe') }}" method="post">
+      <div class="col-12">
+        <label for="inputName" class="form-label">Name</label>
+        <input type="text" class="form-control" name="name" id="inputName">
+      </div>
+      <div class="col-12">
+        <label for="inputLocation" class="form-label">Location (Google Maps Link)</label>
+        <input type="url" class="form-control" name="location" id="inputLocation">
+      </div>
+      <div class="col-md-6">
+        <label for="inputOpening" class="form-label">Opening time</label>
+        <input type="time" class="form-control" name="opening" id="inputOpening">
+      </div>
+      <div class="col-md-6">
+        <label for="inputClosing" class="form-label">Closing time</label>
+        <input type="time" class="form-control" name="closing" id="inputClosing">
+      </div>
+      <div class="col-12">
+        <label for="inputImg" class="form-label">Image url</label>
+        <input type="url" class="form-control" name="img_url" id="inputImg"
+               placeholder="{{ url_for('static', filename='images/coffee_laptop.jpg') }}">
+      </div>
+      <div class="container d-block justify-content-center align-items-center g-3">
+        <label for="inputRating" class="col-12 form-label">My Rating</label>
+        <div class="col-md-6 col-lg-4 bg-body border shadow p-3 px-sm-5 mb-3 rounded" id="inputRating">
+          <div class="row d-flex justify-content-between align-items-center">
+            <h5 class="col-5 review-stat d-flex justify-content-start">Wi-Fi</h5>
+            <div class="col rate-box w-50 d-flex justify-content-between align-items-center">
+              <input type="radio" name="wifi" id="wifi0" value="5"/>
+              <label class="fa fa-wifi" for="wifi0"></label>
+              <input type="radio" name="wifi" id="wifi1" value="4"/>
+              <label class="fa fa-wifi" for="wifi1"></label>
+              <input type="radio" name="wifi" id="wifi2" checked="checked" value="3"/>
+              <label class="fa fa-wifi" for="wifi2"></label>
+              <input type="radio" name="wifi" id="wifi3" value="2"/>
+              <label class="fa fa-wifi" for="wifi3"></label>
+              <input type="radio" name="wifi" id="wifi4" value="1"/>
+              <label class="fa fa-wifi" for="wifi4"></label>
+            </div>
+          </div>
+          <div class="row mt-1 d-flex justify-content-between align-items-center">
+            <h5 class="col-5 review-stat d-flex justify-content-start">Coffee</h5>
+            <div class="col w-50 rate-box d-flex justify-content-between align-items-center">
+              <input type="radio" name="coffee" id="coffee0" value="5"/>
+              <label class="fa fa-mug-saucer" for="coffee0"></label>
+              <input type="radio" name="coffee" id="coffee1" value="4"/>
+              <label class="fa fa-mug-saucer" for="coffee1"></label>
+              <input type="radio" name="coffee" id="coffee2" checked="checked" value="3"/>
+              <label class="fa fa-mug-saucer" for="coffee2"></label>
+              <input type="radio" name="coffee" id="coffee3" value="2"/>
+              <label class="fa fa-mug-saucer" for="coffee3"></label>
+              <input type="radio" name="coffee" id="coffee4" value="1"/>
+              <label class="fa fa-mug-saucer" for="coffee4"></label>
+            </div>
+          </div>
+          <div class="row mt-1 d-flex justify-content-between align-items-center">
+              <h5 class="col-5 review-stat d-flex justify-content-start">Power</h5>
+            <div class="col w-50 rate-box d-flex justify-content-between align-items-center px-3">
+              <input type="radio" name="power" id="power0" value="5"/>
+              <label class="fa fa-plug" for="power0"></label>
+              <input type="radio" name="power" id="power1" value="4"/>
+              <label class="fa fa-plug" for="power1"></label>
+              <input type="radio" name="power" id="power2" checked="checked" value="3"/>
+              <label class="fa fa-plug" for="power2"></label>
+              <input type="radio" name="power" id="power3" value="2"/>
+              <label class="fa fa-plug" for="power3"></label>
+              <input type="radio" name="power" id="power4" value="1"/>
+              <label class="fa fa-plug" for="power4"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
