@@ -326,8 +326,8 @@ def rate_cafe(cafe_id):
 # with app.app_context():
 #     new_user = User(
 #         name='Giulio Biagini',
-#         email='biagiogiu@yahoo.it',
-#         password=generate_password_hash('*MWiulius91', method='pbkdf2:sha256', salt_length=8)
+#         email='email@yahoo.it',
+#         password=generate_password_hash('********', method='pbkdf2:sha256', salt_length=8)
 #     )
 #     new_cafe = MyCafe(
 #                 name="Starbucks",
